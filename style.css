@@ -2,3 +2,5 @@
 
 /* Coordinated home category imagery */
 .course-summary{padding-top:0;overflow:hidden;border:1px solid var(--line);transition:border-color .2s,box-shadow .2s}.category-image{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;background:#111}.course-summary h3,.course-summary p,.course-summary strong{margin-left:24px;margin-right:24px}.course-summary h3{margin-top:24px}.course-summary strong{display:block;margin-bottom:4px}.course-summary:hover{border-color:var(--gold);box-shadow:0 10px 28px #00000010}
+
+.partner:first-child img{background:#fff}
