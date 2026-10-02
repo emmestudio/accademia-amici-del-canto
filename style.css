@@ -10,3 +10,29 @@
 @media(max-width:1000px){.course-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.course-detail{gap:30px;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}}
 @media(max-width:650px){.course-grid,.course-detail{grid-template-columns:1fr}.course-facts{padding:24px}.course-subheading{margin-top:32px}.course-tile-copy{padding:24px}.course-detail h2{font-size:2rem}}
 @media(prefers-reduced-motion:reduce){.course-tile{transition:none}.course-tile:hover{transform:none}}
+
+/* Dynamic interactions */
+@media(prefers-reduced-motion:no-preference){
+ .button,button,nav a,.course-summary,.card,.partner img{transition:background-color .22s,color .22s,border-color .22s,box-shadow .22s,transform .22s}
+ .button:hover{transform:translateY(-3px);box-shadow:0 8px 22px #0002}
+ .button:active,button:active,.course-tile:active,.course-summary:active{transform:scale(.98)}
+ nav a:hover{color:#92700d;border-bottom-color:var(--gold)}
+ nav a:last-child:hover{color:white;background:#383019}
+ .brand img{transition:transform .3s}.brand:hover img{transform:scale(1.025)}
+ .course-tile>img,.category-image{transition:transform .5s,filter .4s}
+ .course-tile:hover>img,.course-summary:hover .category-image{transform:scale(1.035);filter:brightness(1.08)}
+ .card:hover{border-color:#bba35e;box-shadow:0 8px 24px #0000000a}
+ .partner:hover img{transform:scale(1.025)}
+ .motion-reveal{opacity:0;transform:translateY(20px);transition:opacity .55s ease var(--motion-delay,0ms),transform .55s cubic-bezier(.2,.7,.2,1) var(--motion-delay,0ms)}
+ .motion-reveal.motion-visible{opacity:1;transform:translateY(0)}
+ .course-tile.motion-visible:hover{transform:translateY(-4px)}
+ .gallery button.motion-visible:hover{transform:translateY(-3px)}
+ dialog[open]{animation:dialog-arrive .25s ease-out}
+ dialog[open]::backdrop{animation:backdrop-arrive .25s ease-out}
+ @keyframes dialog-arrive{from{opacity:0;transform:translateY(15px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+ @keyframes backdrop-arrive{from{opacity:0}to{opacity:1}}
+}
+.button,.course-tile,.course-summary,.gallery button,nav a,#menu{position:relative;overflow:hidden}
+.click-ripple{position:absolute;pointer-events:none;width:14px;height:14px;border-radius:50%;background:#cfa52666;transform:translate(-50%,-50%);animation:click-wave .6s ease-out forwards;z-index:2}
+@keyframes click-wave{to{transform:translate(-50%,-50%) scale(38);opacity:0}}
+@media(prefers-reduced-motion:reduce){.motion-reveal{opacity:1!important;transform:none!important}.click-ripple{display:none}*,*::before,*::after{animation:none!important;transition:none!important}}
