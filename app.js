@@ -141,8 +141,8 @@ function setupGalleryCarousel(){
  if(!track)return;
  const slides=Array.from(track.querySelectorAll('.gallery-slide')),counter=document.querySelector('.gallery-counter');
  let current=0,frame;
- function nearest(){let index=0,distance=Infinity;slides.forEach((slide,i)=>{const d=Math.abs(slide.offsetLeft-track.offsetLeft-track.scrollLeft);if(d<distance){distance=d;index=i;}});return index;}
- function move(step){current=(nearest()+step+slides.length)%slides.length;track.scrollTo({left:slides[current].offsetLeft-track.offsetLeft,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}
+ function nearest(){let index=0,distance=Infinity;slides.forEach((slide,i)=>{const d=Math.abs(slide.offsetLeft-track.scrollLeft);if(d<distance){distance=d;index=i;}});return index;}
+ function move(step){current=(nearest()+step+slides.length)%slides.length;track.scrollTo({left:slides[current].offsetLeft,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}
  document.querySelector('.gallery-prev').onclick=()=>move(-1);
  document.querySelector('.gallery-next').onclick=()=>move(1);
  track.addEventListener('scroll',()=>{cancelAnimationFrame(frame);frame=requestAnimationFrame(()=>{current=nearest();counter.textContent=(current+1)+' / '+slides.length;});},{passive:true});
