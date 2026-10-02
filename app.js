@@ -90,5 +90,48 @@ if(route==='partnership')html=intro('Partnership','La creatività incontra nuove
 if(route==='gallery')html=intro('Gallery','I momenti che ci uniscono.','Le emozioni degli spettacoli, gli incontri e la vita dell’accademia.')+`<section class="section"><div class="gallery">${photos.map((p,i)=>`<button data-photo="${i}" aria-label="Apri fotografia ${i+1}"><img data-image="${p}" alt="${p.includes('innaugurazione')?'Inaugurazione dell’accademia':'Un momento degli spettacoli dell’accademia'}" loading="lazy"></button>`).join('')}</div></section>`;
 if(route==='contatti')html=intro('Contatti','Cominciamo dalla tua passione.','Hai un corso in mente o vuoi capire da dove partire? Scrivici e concordiamo una prova gratuita.')+`<section class="section contact-grid"><div><h2>Ci trovi a Caltanissetta.</h2><p>Via Ruggero Settimo SNC<br>Caltanissetta, CL 93100</p><a class="button secondary" href="https://maps.app.goo.gl/jJHT9J7eJ5V5qmfk8" target="_blank" rel="noopener">Indicazioni su Google Maps</a><h3>Orari di apertura</h3><p>Lunedì – venerdì<br>9:00–13:00 · 15:00–20:00</p></div><div class="card"><h3>Informazioni e prova gratuita</h3>${GOOGLE_FORM_URL?cta():''}<p><a href="tel:+393898227001">+39 389 822 7001</a><br><a href="tel:+393881988602">+39 388 198 8602</a></p><a href="mailto:accademiaamicidelcanto@gmail.com">accademiaamicidelcanto@gmail.com</a><p><a href="https://wa.me/393898227001" target="_blank" rel="noopener">Scrivici su WhatsApp</a></p><hr><p><a href="https://www.instagram.com/accademia_amicidelcanto/" target="_blank" rel="noopener">Instagram</a> · <a href="https://www.facebook.com/share/1DyVE8s6Sw/" target="_blank" rel="noopener">Facebook</a></p></div></section>`;
 if(route==='portale')html=intro('Accesso portale','Il tuo spazio, prossimamente.')+`<section class="section"><div class="notice"><h2>Portale in arrivo</h2><p>L’accesso al portale dell’accademia sarà disponibile prossimamente.</p><a class="button" href="#contatti">Contatta l’accademia</a></div></section>`;
-document.getElementById('content').innerHTML=html;document.querySelectorAll('[data-image]').forEach(el=>el.src=ASSETS[el.dataset.image]);document.querySelectorAll('[data-photo]').forEach(b=>b.addEventListener('click',()=>openPhoto(Number(b.dataset.photo))));document.title=(courseIndex>=0?courses[courseIndex][0]:routes.find(r=>r[0]===route)[1])+' | Accademia Amici del Canto';document.getElementById('navigation').classList.remove('open');document.getElementById('menu').setAttribute('aria-expanded','false');window.scrollTo(0,0);}
+document.getElementById('content').innerHTML=html;setupPageMotion();document.querySelectorAll('[data-image]').forEach(el=>el.src=ASSETS[el.dataset.image]);document.querySelectorAll('[data-photo]').forEach(b=>b.addEventListener('click',()=>openPhoto(Number(b.dataset.photo))));document.title=(courseIndex>=0?courses[courseIndex][0]:routes.find(r=>r[0]===route)[1])+' | Accademia Amici del Canto';document.getElementById('navigation').classList.remove('open');document.getElementById('menu').setAttribute('aria-expanded','false');window.scrollTo(0,0);}
 let currentPhoto=0;const dialog=document.getElementById('lightbox');function openPhoto(i){currentPhoto=(i+photos.length)%photos.length;dialog.querySelector('img').src=ASSETS[photos[currentPhoto]];dialog.querySelector('img').alt=`Fotografia ${currentPhoto+1} dell’accademia`;if(!dialog.open)dialog.showModal();}document.getElementById('close').onclick=()=>dialog.close();document.getElementById('previous').onclick=()=>openPhoto(currentPhoto-1);document.getElementById('next').onclick=()=>openPhoto(currentPhoto+1);dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()});dialog.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')openPhoto(currentPhoto-1);if(e.key==='ArrowRight')openPhoto(currentPhoto+1)});document.getElementById('menu').onclick=()=>{const open=document.getElementById('navigation').classList.toggle('open');document.getElementById('menu').setAttribute('aria-expanded',String(open))};document.getElementById('year').textContent=new Date().getFullYear();window.addEventListener('hashchange',render);render();
+
+/* Motion: progressive enhancement, with reduced-motion support. */
+let navigationMotionTimer;
+function setupPageMotion(){
+ const main=document.getElementById('content');
+ if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+ main.getAnimations().forEach(animation=>animation.cancel());
+ main.animate([{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'translateY(0)'}],{duration:380,easing:'cubic-bezier(.2,.7,.2,1)'});
+ if(window.pageRevealObserver)window.pageRevealObserver.disconnect();
+ if(!('IntersectionObserver' in window))return;
+ const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{
+  if(!entry.isIntersecting)return;
+  entry.target.classList.add('motion-visible');
+  observer.unobserve(entry.target);
+ });},{threshold:.06});
+ window.pageRevealObserver=observer;
+ main.querySelectorAll('.section,.intro,.course-tile,.card,.course-summary,.gallery button').forEach((element,index)=>{
+  element.classList.add('motion-reveal');
+  element.style.setProperty('--motion-delay',(element.matches('.course-tile,.card,.course-summary,.gallery button')?(index%3)*55:0)+'ms');
+  observer.observe(element);
+ });
+}
+document.addEventListener('click',event=>{
+ const control=event.target.closest('a,button');
+ if(!control)return;
+ const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ if(!reduced&&control.matches('.button,.course-tile,.course-summary,.gallery button,nav a,#menu')){
+  const rect=control.getBoundingClientRect(),ripple=document.createElement('span');
+  ripple.className='click-ripple';ripple.setAttribute('aria-hidden','true');
+  ripple.style.left=(event.detail?event.clientX-rect.left:rect.width/2)+'px';
+  ripple.style.top=(event.detail?event.clientY-rect.top:rect.height/2)+'px';
+  control.appendChild(ripple);
+  setTimeout(()=>ripple.remove(),650);
+ }
+ const href=control.getAttribute('href');
+ if(reduced||event.defaultPrevented||event.button!==0||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey||control.target==='_blank'||!href||!href.startsWith('#')||href==='#content'||href===location.hash)return;
+ event.preventDefault();
+ clearTimeout(navigationMotionTimer);
+ const main=document.getElementById('content');
+ main.getAnimations().forEach(animation=>animation.cancel());
+ main.animate([{opacity:1,transform:'translateY(0)'},{opacity:0,transform:'translateY(-8px)'}],{duration:140,easing:'ease-in'});
+ navigationMotionTimer=setTimeout(()=>{location.hash=href;},130);
+});
