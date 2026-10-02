@@ -99,7 +99,7 @@ function setupPageMotion(){
  const main=document.getElementById('content');
  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
  main.getAnimations().forEach(animation=>animation.cancel());
- main.animate([{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'translateY(0)'}],{duration:380,easing:'cubic-bezier(.2,.7,.2,1)'});
+ main.animate([{opacity:0,transform:'translateY(32px)'},{opacity:1,transform:'translateY(0)'}],{duration:650,easing:'cubic-bezier(.2,.7,.2,1)'});
  if(window.pageRevealObserver)window.pageRevealObserver.disconnect();
  if(!('IntersectionObserver' in window))return;
  const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{
@@ -110,7 +110,7 @@ function setupPageMotion(){
  window.pageRevealObserver=observer;
  main.querySelectorAll('.section,.intro,.course-tile,.card,.course-summary,.gallery button').forEach((element,index)=>{
   element.classList.add('motion-reveal');
-  element.style.setProperty('--motion-delay',(element.matches('.course-tile,.card,.course-summary,.gallery button')?(index%3)*55:0)+'ms');
+  element.style.setProperty('--motion-delay',(element.matches('.course-tile,.card,.course-summary,.gallery button')?(index%3)*110:0)+'ms');
   observer.observe(element);
  });
 }
@@ -132,6 +132,6 @@ document.addEventListener('click',event=>{
  clearTimeout(navigationMotionTimer);
  const main=document.getElementById('content');
  main.getAnimations().forEach(animation=>animation.cancel());
- main.animate([{opacity:1,transform:'translateY(0)'},{opacity:0,transform:'translateY(-8px)'}],{duration:140,easing:'ease-in'});
- navigationMotionTimer=setTimeout(()=>{location.hash=href;},130);
+ main.animate([{opacity:1,transform:'translateY(0)'},{opacity:0,transform:'translateY(-20px)'}],{duration:240,easing:'ease-in'});
+ navigationMotionTimer=setTimeout(()=>{location.hash=href;},220);
 });
