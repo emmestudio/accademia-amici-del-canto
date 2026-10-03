@@ -1,6 +1,6 @@
 // Inserire qui il link pubblico del Google Form quando disponibile.
 const GOOGLE_FORM_URL='';
-const PORTAL_URL='https://accademia-portale.vercel.app/';
+const PORTAL_URL='https://portale.accademiamicidelcanto.com/';
 const routes=[['home','Home'],['corsi','Corsi'],['insegnanti','Insegnanti'],['news','News'],['storia','La nostra storia'],['partnership','Partnership'],['gallery','Gallery'],['contatti','Contatti'],['portale','Accesso portale']];
 const courses=[
   [
