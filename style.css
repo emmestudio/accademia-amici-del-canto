@@ -74,3 +74,6 @@
 /* Compact circular portraits inside course information */
 .teacher-course-avatar{display:block;width:140px;height:140px;border-radius:50%;overflow:hidden;border:3px solid var(--gold);margin:12px 0 16px;background:#111}
 .teacher-course-avatar .teacher-portrait-course{width:100%;height:100%;max-width:none;max-height:none;aspect-ratio:1;object-fit:cover;object-position:center;border-radius:0;margin:0;transform:scale(3) translate(-5%,26%)}
+
+.teacher-portrait-lachina{object-position:center top}
+.teacher-course-avatar .teacher-portrait-lachina{object-position:center top;transform:scale(2.2) translate(3%,18%)}
