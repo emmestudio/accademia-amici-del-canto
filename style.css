@@ -89,3 +89,10 @@
 
 .teacher-portrait-giordano{object-position:85% top}
 .teacher-course-avatar .teacher-portrait-giordano{object-position:center top;transform:scale(2.1) translate(-30%,19%)}
+
+.teacher-card-link{display:block;text-decoration:none;color:inherit}
+.teacher-card-link:hover,.teacher-card-link:focus-visible{border-color:var(--gold);box-shadow:0 12px 30px #0001}
+.teacher-profile{display:grid;grid-template-columns:minmax(200px,1fr) minmax(0,2fr);gap:48px;align-items:start;margin-top:32px}
+.teacher-profile .teacher-portrait{max-height:560px}
+.teacher-profile p{line-height:1.8}
+@media(max-width:650px){.teacher-profile{grid-template-columns:1fr;gap:24px}.teacher-profile .teacher-portrait{max-width:380px;max-height:440px}}
