@@ -83,3 +83,6 @@
 .course-teachers{display:flex;flex-wrap:wrap;gap:20px;margin-top:12px}
 .course-teacher{flex:1 1 140px;max-width:220px}
 .course-teacher span:not(.teacher-course-avatar){display:block}
+
+.teacher-portrait-rino{object-position:55% 40%}
+.teacher-course-avatar .teacher-portrait-rino{object-position:center;transform:scale(3) translate(-4%,13%)}

@@ -65,11 +65,11 @@ const courses=[
   ]
 ];
 const teachers=[['Martina Giordano','Canto individuale e di gruppo'],['Rino Giglio','Batteria'],['Marcello Lachina','Chitarra · Home Recording'],['Valerio Ruvolo','Basso · Teoria musicale'],['Marcello Giordano','Pianoforte'],['Docente interno','Musica d’insieme']];
-const teacherPhotos={'Martina Giordano':'images/teachers/martina-giordano.jpg','Marcello Lachina':'images/teachers/marcello-lachina.jpg','Valerio Ruvolo':'images/teachers/valerio-ruvolo.webp'};
+const teacherPhotos={'Martina Giordano':'images/teachers/martina-giordano.jpg','Marcello Lachina':'images/teachers/marcello-lachina.jpg','Valerio Ruvolo':'images/teachers/valerio-ruvolo.webp','Rino Giglio':'images/teachers/rino-giglio.jpg'};
 function teacherPortrait(name,extraClass=''){
  const teacher=name.split(' · ')[0],src=teacherPhotos[teacher];
  if(!src)return '';
- const photo=`<img class="teacher-portrait ${extraClass} ${teacher==='Marcello Lachina'?'teacher-portrait-lachina':teacher==='Valerio Ruvolo'?'teacher-portrait-valerio':''}" src="${src}" alt="${teacher} · ${teachers.find(([name])=>name===teacher)?.[1]||'Docente dell’accademia'}" loading="lazy" width="1336" height="1336">`;
+ const photo=`<img class="teacher-portrait ${extraClass} ${teacher==='Marcello Lachina'?'teacher-portrait-lachina':teacher==='Valerio Ruvolo'?'teacher-portrait-valerio':teacher==='Rino Giglio'?'teacher-portrait-rino':''}" src="${src}" alt="${teacher} · ${teachers.find(([name])=>name===teacher)?.[1]||'Docente dell’accademia'}" loading="lazy" width="1336" height="1336">`;
  return extraClass==='teacher-portrait-course'?`<span class="teacher-course-avatar">${photo}</span>`:photo;
 }
 function courseTeachers(label){
