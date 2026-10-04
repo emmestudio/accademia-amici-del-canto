@@ -86,3 +86,6 @@
 
 .teacher-portrait-rino{object-position:55% 40%}
 .teacher-course-avatar .teacher-portrait-rino{object-position:center;transform:scale(3) translate(-4%,13%)}
+
+.teacher-portrait-giordano{object-position:85% top}
+.teacher-course-avatar .teacher-portrait-giordano{object-position:center top;transform:scale(2.1) translate(-30%,19%)}
