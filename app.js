@@ -194,3 +194,20 @@ function setupGalleryCarousel(){
 }
 
 function schoolMap(){return `<section class="section school-location"><span class="eyebrow">Dove siamo</span><h2>Vieni a conoscerci.</h2><div class="school-map-layout"><div><p><strong>Accademia Amici del Canto</strong><br>Via Ruggero Settimo SNC<br>93100 Caltanissetta, CL</p><p>Lunedì–venerdì<br>9:00–13:00 · 15:00–20:00</p><a class="button" href="https://maps.app.goo.gl/jJHT9J7eJ5V5qmfk8" target="_blank" rel="noopener">Apri le indicazioni</a></div><iframe class="school-map" title="Google Maps: posizione dell’Accademia Amici del Canto" src="https://www.google.com/maps?q=37.486709,14.059331&z=17&output=embed" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe></div></section>`;}
+
+/* Newsletter preview: no subscriptions or email storage until the provider is connected. */
+(function setupNewsletterPopup(){
+ const popup=document.getElementById('newsletter-popup');
+ if(!popup||typeof popup.showModal!=='function')return;
+ const email=popup.querySelector('input'),key='academy-newsletter-preview-seen';
+ let previousFocus;
+ function open(){if(popup.open||document.querySelector('dialog[open]'))return;previousFocus=document.activeElement;popup.showModal();document.body.classList.add('newsletter-is-open');}
+ function close(){popup.close();}
+ popup.querySelector('.newsletter-close').addEventListener('click',close);
+ popup.querySelector('.newsletter-later').addEventListener('click',close);
+ popup.addEventListener('click',event=>{if(event.target!==popup)return;const r=popup.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)close();});
+ popup.addEventListener('close',()=>{email.value='';document.body.classList.remove('newsletter-is-open');try{sessionStorage.setItem(key,'1');}catch{}if(previousFocus&&previousFocus.isConnected)previousFocus.focus();});
+ document.getElementById('newsletter-open').addEventListener('click',open);
+ let seen=false;try{seen=sessionStorage.getItem(key)==='1';}catch{}
+ if(!seen)open();
+})();
