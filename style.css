@@ -116,3 +116,23 @@ body.newsletter-is-open{overflow:hidden}
 @keyframes newsletter-enter{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
 @media(max-width:650px){.newsletter-popup{padding:36px 24px 24px}}
 @media(prefers-reduced-motion:reduce){.newsletter-popup[open]{animation:none}}
+
+.public-news-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+.public-news-card{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;overflow:hidden;text-decoration:none;background:#fff;transition:transform .2s,border-color .2s}
+.public-news-card:hover{transform:translateY(-4px);border-color:var(--gold)}
+.public-news-card>img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}
+.public-news-card>div{padding:26px;display:flex;flex-direction:column;flex:1}
+.public-news-card h2{font-size:1.65rem;margin:10px 0;overflow-wrap:anywhere}
+.public-news-card p{overflow-wrap:anywhere}
+.public-news-card strong{margin-top:auto;padding-top:18px}
+.public-news-article{max-width:900px;margin:auto}
+.public-news-article h1{font-size:clamp(2.2rem,5vw,4rem);overflow-wrap:anywhere}
+.public-news-lead{font-size:1.2rem;color:#555;overflow-wrap:anywhere}
+.public-news-article>img{width:100%;max-height:600px;object-fit:cover;border-radius:12px;margin:24px 0}
+.public-news-body{white-space:pre-wrap;overflow-wrap:anywhere;font-size:1.1rem;line-height:1.85}
+nav.public-news-pages{display:flex;position:static;flex-direction:row;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;margin-top:35px;padding:0}
+nav.public-news-pages a{font-size:16px;padding:12px 20px;margin:0}
+nav.public-news-pages a:last-child{background:var(--gold);color:#111}
+@media(max-width:1000px){.public-news-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.public-news-grid{grid-template-columns:1fr}.public-news-card>div{padding:22px}}
+@media(prefers-reduced-motion:reduce){.public-news-card{transition:none}.public-news-card:hover{transform:none}}
