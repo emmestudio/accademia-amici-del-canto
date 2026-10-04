@@ -65,12 +65,18 @@ const courses=[
   ]
 ];
 const teachers=[['Martina Giordano','Canto individuale e di gruppo'],['Rino Giglio','Batteria'],['Marcello Lachina','Chitarra · Home Recording'],['Valerio Ruvolo','Basso · Teoria musicale'],['Marcello Giordano','Pianoforte'],['Docente interno','Musica d’insieme']];
-const teacherPhotos={'Martina Giordano':'images/teachers/martina-giordano.jpg','Marcello Lachina':'images/teachers/marcello-lachina.jpg'};
+const teacherPhotos={'Martina Giordano':'images/teachers/martina-giordano.jpg','Marcello Lachina':'images/teachers/marcello-lachina.jpg','Valerio Ruvolo':'images/teachers/valerio-ruvolo.webp'};
 function teacherPortrait(name,extraClass=''){
  const teacher=name.split(' · ')[0],src=teacherPhotos[teacher];
  if(!src)return '';
- const photo=`<img class="teacher-portrait ${extraClass} ${teacher==='Marcello Lachina'?'teacher-portrait-lachina':''}" src="${src}" alt="${teacher} · ${teachers.find(([name])=>name===teacher)?.[1]||'Docente dell’accademia'}" loading="lazy" width="1336" height="1336">`;
+ const photo=`<img class="teacher-portrait ${extraClass} ${teacher==='Marcello Lachina'?'teacher-portrait-lachina':teacher==='Valerio Ruvolo'?'teacher-portrait-valerio':''}" src="${src}" alt="${teacher} · ${teachers.find(([name])=>name===teacher)?.[1]||'Docente dell’accademia'}" loading="lazy" width="1336" height="1336">`;
  return extraClass==='teacher-portrait-course'?`<span class="teacher-course-avatar">${photo}</span>`:photo;
+}
+function courseTeachers(label){
+ return '<div class="course-teachers">'+label.split(' · ').map(part=>{
+  const name=part.split(' (')[0].trim();
+  return '<div class="course-teacher">'+teacherPortrait(name,'teacher-portrait-course')+'<span>'+part+'</span></div>';
+ }).join('')+'</div>';
 }
 const photos=['foto 1.jpeg','goto 2.jpeg',...Array.from({length:13},(_,i)=>`foto ${i+3}.jpeg`),'innaugurazione foto.jpeg'];
 const story='Dal 2010, a Caltanissetta, accompagniamo bambini, ragazzi e adulti nella crescita musicale. Puoi partire dalle prime note, approfondire ciò che già conosci e sviluppare il tuo modo di cantare o suonare.';
@@ -87,7 +93,7 @@ function courseCollection(ids){return '<div class="course-grid">'+ids.map(course
 function coursePage(i){
  const c=courses[i],d=courseInfo[i];
  const age=d[2]||(i===1?'Percorso avanzato: livello da concordare con il docente':'Contattaci per informazioni sui requisiti di accesso');
- return intro('Corsi',c[0],d[5])+`<section class="section"><a class="back-link" href="#corsi">Tutti i corsi</a><div class="course-detail"><div><img class="course-detail-image" data-image="${d[6]}" alt="${c[0]}"><h2>Il percorso</h2><p>${c[2]}</p><h3>Cosa studierai</h3><ul class="course-topics">${d[4].map(t=>'<li>'+t+'</li>').join('')}</ul></div><aside class="course-facts"><h3>Il corso in pratica</h3><dl><dt>Modalità</dt><dd>${d[3]}</dd><dt>Età e accesso</dt><dd>${age}</dd><dt>Durata della lezione</dt><dd>1 ora</dd><dt>Frequenza</dt><dd>Una lezione a settimana</dd><dt>Periodo di attività</dt><dd>Da settembre a luglio</dd><dt>Docente</dt><dd>${teacherPortrait(d[1],'teacher-portrait-course')}${d[1]}</dd>${i===2?'<dt>Teoria musicale</dt><dd>Due incontri di gruppo al mese con Valerio Ruvolo, in aggiunta alla lezione individuale settimanale</dd>':''}</dl><h4>Informazioni e iscrizioni</h4><p>Contattaci per informazioni su costi, disponibilità e modalità di iscrizione.</p><h4>Prova gratuita</h4><p>Raccontaci i tuoi obiettivi e concorda una prova gratuita con la scuola.</p>${cta()}</aside></div></section>`;
+ return intro('Corsi',c[0],d[5])+`<section class="section"><a class="back-link" href="#corsi">Tutti i corsi</a><div class="course-detail"><div><img class="course-detail-image" data-image="${d[6]}" alt="${c[0]}"><h2>Il percorso</h2><p>${c[2]}</p><h3>Cosa studierai</h3><ul class="course-topics">${d[4].map(t=>'<li>'+t+'</li>').join('')}</ul></div><aside class="course-facts"><h3>Il corso in pratica</h3><dl><dt>Modalità</dt><dd>${d[3]}</dd><dt>Età e accesso</dt><dd>${age}</dd><dt>Durata della lezione</dt><dd>1 ora</dd><dt>Frequenza</dt><dd>Una lezione a settimana</dd><dt>Periodo di attività</dt><dd>Da settembre a luglio</dd><dt>Docente</dt><dd>${courseTeachers(d[1])}</dd>${i===2?'<dt>Teoria musicale</dt><dd>Due incontri di gruppo al mese con Valerio Ruvolo, in aggiunta alla lezione individuale settimanale</dd>':''}</dl><h4>Informazioni e iscrizioni</h4><p>Contattaci per informazioni su costi, disponibilità e modalità di iscrizione.</p><h4>Prova gratuita</h4><p>Raccontaci i tuoi obiettivi e concorda una prova gratuita con la scuola.</p>${cta()}</aside></div></section>`;
 }
 
 function render(){let route=location.hash.slice(1)||'home';const courseIndex=courseInfo.findIndex(d=>route==='corso-'+d[0]);if(!routes.some(r=>r[0]===route)&&courseIndex<0)route='home';document.getElementById('navigation').innerHTML=routes.map(([id,label])=>`<a href="${id==='portale'?PORTAL_URL:'#'+id}" ${(id===route||(id==='corsi'&&courseIndex>=0))?'class="active" aria-current="page"':''}>${label}</a>`).join('');let html='';
