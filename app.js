@@ -135,7 +135,7 @@ if(route==='gallery')html=intro('Gallery','I momenti che ci uniscono.','Le emozi
 if(route==='contatti')html=intro('Contatti','Cominciamo dalla tua passione.','Hai un corso in mente o vuoi capire da dove partire? Scrivici e concordiamo una prova gratuita.')+`<section class="section contact-grid"><div><h2>Ci trovi a Caltanissetta.</h2><p>Via Ruggero Settimo SNC<br>Caltanissetta, CL 93100</p><a class="button secondary" href="https://maps.app.goo.gl/jJHT9J7eJ5V5qmfk8" target="_blank" rel="noopener">Indicazioni su Google Maps</a><h3>Orari di apertura</h3><p>Lunedì – venerdì<br>9:00–13:00 · 15:00–20:00</p></div><div class="card"><h3>Informazioni e prova gratuita</h3>${GOOGLE_FORM_URL?cta():''}<p><a href="tel:+393898227001">+39 389 822 7001</a><br><a href="tel:+393881988602">+39 388 198 8602</a></p><a href="mailto:accademiaamicidelcanto@gmail.com">accademiaamicidelcanto@gmail.com</a><p><a href="https://wa.me/393898227001" target="_blank" rel="noopener">Scrivici su WhatsApp</a></p><hr><p><a href="https://www.instagram.com/accademia_amicidelcanto/" target="_blank" rel="noopener">Instagram</a> · <a href="https://www.facebook.com/share/1DyVE8s6Sw/" target="_blank" rel="noopener">Facebook</a></p></div></section>`;
 if(route==='contatti')html+=schoolMap();
 if(route==='portale')html=intro('Accesso portale','Il tuo spazio in accademia.')+`<section class="section"><div class="notice"><h2>Accedi al portale</h2><p>Consulta lezioni, materiali didattici, comunicazioni e rette dal tuo account.</p><a class="button" href="${PORTAL_URL}">Accedi al portale</a></div></section>`;
-document.getElementById('content').innerHTML=html;setupPageMotion();document.querySelectorAll('[data-image]').forEach(el=>el.src=ASSETS[el.dataset.image]);document.querySelectorAll('[data-photo]').forEach(b=>b.addEventListener('click',()=>openPhoto(Number(b.dataset.photo))));document.title=(teacherIndex>=0?teacherProfiles[teacherIndex].name:courseIndex>=0?courses[courseIndex][0]:routes.find(r=>r[0]===route)[1])+' | Accademia Amici del Canto';document.getElementById('navigation').classList.remove('open');document.getElementById('menu').setAttribute('aria-expanded','false');window.scrollTo(0,0);if(route==='gallery')setupGalleryCarousel();if(route==='news')loadPublicNews(newsSlug);}
+if(location.hash==='#newsletter-confermata')html=intro('Newsletter','Grazie per la conferma.','Hai completato il passaggio di conferma su Brevo. Riceverai le prossime novità dell’Accademia via email.')+'<section class="section"><a class="button" href="#home">Torna alla home</a></section>';document.getElementById('content').innerHTML=html;setupPageMotion();document.querySelectorAll('[data-image]').forEach(el=>el.src=ASSETS[el.dataset.image]);document.querySelectorAll('[data-photo]').forEach(b=>b.addEventListener('click',()=>openPhoto(Number(b.dataset.photo))));document.title=(teacherIndex>=0?teacherProfiles[teacherIndex].name:courseIndex>=0?courses[courseIndex][0]:routes.find(r=>r[0]===route)[1])+' | Accademia Amici del Canto';document.getElementById('navigation').classList.remove('open');document.getElementById('menu').setAttribute('aria-expanded','false');window.scrollTo(0,0);if(route==='gallery')setupGalleryCarousel();if(route==='news')loadPublicNews(newsSlug);}
 let currentPhoto=0;const dialog=document.getElementById('lightbox');function openPhoto(i){currentPhoto=(i+photos.length)%photos.length;dialog.querySelector('img').src=ASSETS[photos[currentPhoto]];dialog.querySelector('img').alt=`Fotografia ${currentPhoto+1} dell’accademia`;if(!dialog.open)dialog.showModal();}document.getElementById('close').onclick=()=>dialog.close();document.getElementById('previous').onclick=()=>openPhoto(currentPhoto-1);document.getElementById('next').onclick=()=>openPhoto(currentPhoto+1);dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()});dialog.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')openPhoto(currentPhoto-1);if(e.key==='ArrowRight')openPhoto(currentPhoto+1)});document.getElementById('menu').onclick=()=>{const open=document.getElementById('navigation').classList.toggle('open');document.getElementById('menu').setAttribute('aria-expanded',String(open))};document.getElementById('year').textContent=new Date().getFullYear();window.addEventListener('hashchange',render);render();
 
 /* Motion: progressive enhancement, with reduced-motion support. */
@@ -196,11 +196,11 @@ function setupGalleryCarousel(){
 
 function schoolMap(){return `<section class="section school-location"><span class="eyebrow">Dove siamo</span><h2>Vieni a conoscerci.</h2><div class="school-map-layout"><div><p><strong>Accademia Amici del Canto</strong><br>Via Ruggero Settimo SNC<br>93100 Caltanissetta, CL</p><p>Lunedì–venerdì<br>9:00–13:00 · 15:00–20:00</p><a class="button" href="https://maps.app.goo.gl/jJHT9J7eJ5V5qmfk8" target="_blank" rel="noopener">Apri le indicazioni</a></div><iframe class="school-map" title="Google Maps: posizione dell’Accademia Amici del Canto" src="https://www.google.com/maps?q=37.486709,14.059331&z=17&output=embed" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe></div></section>`;}
 
-/* Newsletter preview: no subscriptions or email storage until the provider is connected. */
+/* Newsletter: native Brevo double opt-in; never store email in the browser. */
 (function setupNewsletterPopup(){
  const popup=document.getElementById('newsletter-popup');
  if(!popup||typeof popup.showModal!=='function')return;
- const email=popup.querySelector('input'),key='academy-newsletter-preview-seen';
+ const email=popup.querySelector('input'),key='academy-newsletter-seen-v1';
  let previousFocus;
  function open(){if(popup.open||document.querySelector('dialog[open]'))return;previousFocus=document.activeElement;popup.showModal();document.body.classList.add('newsletter-is-open');}
  function close(){popup.close();}
@@ -209,8 +209,23 @@ function schoolMap(){return `<section class="section school-location"><span clas
  popup.addEventListener('click',event=>{if(event.target!==popup)return;const r=popup.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)close();});
  popup.addEventListener('close',()=>{email.value='';document.body.classList.remove('newsletter-is-open');try{sessionStorage.setItem(key,'1');}catch{}if(previousFocus&&previousFocus.isConnected)previousFocus.focus();});
  document.getElementById('newsletter-open').addEventListener('click',open);
+ const form=document.getElementById('newsletter-form'),submit=form.querySelector('[type="submit"]'),status=document.getElementById('newsletter-status');
+ let sending=false;
+ form.addEventListener('submit',async event=>{
+  event.preventDefault();if(sending||!form.reportValidity())return;
+  sending=true;submit.disabled=true;submit.textContent='Invio in corso…';status.textContent='Stiamo preparando l’email di conferma.';
+  try{
+   const response=await fetch('https://portale.accademiamicidelcanto.com/api/public/newsletter',{method:'POST',credentials:'omit',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email.value.trim(),consent:document.getElementById('newsletter-consent').checked,website:document.getElementById('newsletter-website').value}),signal:AbortSignal.timeout(25000)});
+   const data=await response.json();
+   if(!response.ok)throw Error(data.error||'Iscrizione non disponibile. Riprova più tardi.');
+   status.textContent=data.message;form.reset();submit.textContent='Controlla la tua email';
+  }catch(error){status.textContent=error.name==='TimeoutError'?'La richiesta sta impiegando più tempo del previsto. Controlla la posta prima di riprovare.':error.message||'Connessione non disponibile. Riprova più tardi.';submit.disabled=false;submit.textContent='Iscrivimi alla newsletter';}
+  finally{sending=false;}
+ });
+ popup.addEventListener('close',()=>{form.reset();if(!sending){submit.disabled=false;submit.textContent='Iscrivimi alla newsletter';status.textContent='Riceverai un’email con un pulsante per confermare l’iscrizione.';}});
+
  let seen=false;try{seen=sessionStorage.getItem(key)==='1';}catch{}
- if(!seen)open();
+ if(!seen&&location.hash!=='#newsletter-confermata')open();
 })();
 
 /* Published website news; draft content is never exposed by the public API. */
