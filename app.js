@@ -68,7 +68,9 @@ const teachers=[['Martina Giordano','Canto individuale e di gruppo'],['Rino Gigl
 const teacherPhotos={'Martina Giordano':'images/teachers/martina-giordano.jpg'};
 function teacherPortrait(name,extraClass=''){
  const teacher=name.split(' · ')[0],src=teacherPhotos[teacher];
- return src?`<img class="teacher-portrait ${extraClass}" src="${src}" alt="${teacher}, docente di canto" loading="lazy" width="1336" height="1336">`:'';
+ if(!src)return '';
+ const photo=`<img class="teacher-portrait ${extraClass}" src="${src}" alt="${teacher}, docente di canto" loading="lazy" width="1336" height="1336">`;
+ return extraClass==='teacher-portrait-course'?`<span class="teacher-course-avatar">${photo}</span>`:photo;
 }
 const photos=['foto 1.jpeg','goto 2.jpeg',...Array.from({length:13},(_,i)=>`foto ${i+3}.jpeg`),'innaugurazione foto.jpeg'];
 const story='Dal 2010, a Caltanissetta, accompagniamo bambini, ragazzi e adulti nella crescita musicale. Puoi partire dalle prime note, approfondire ciò che già conosci e sviluppare il tuo modo di cantare o suonare.';
