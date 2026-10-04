@@ -109,7 +109,7 @@ body.newsletter-is-open{overflow:hidden}
 .newsletter-popup p{color:#555}
 .newsletter-popup label{display:block;font-weight:700;margin:24px 0 8px}
 .newsletter-popup input{display:block;width:100%;min-width:0;font:inherit;padding:14px 16px;border:1px solid #bbb;border-radius:8px;background:#fff;color:#111}
-.newsletter-popup .newsletter-submit{display:block;width:100%;margin:12px 0 0;background:var(--gold);border-radius:8px;padding:14px 10px;color:#111;cursor:not-allowed;opacity:.7}
+.newsletter-popup .newsletter-submit{display:block;width:100%;margin:12px 0 0;background:var(--gold);border-radius:8px;padding:14px 10px;color:#111;cursor:pointer;opacity:1}
 .newsletter-popup .newsletter-status{font-size:13px;line-height:1.5;margin:16px 0}
 .newsletter-popup .newsletter-later{display:block;margin:12px auto 0;padding:8px;background:transparent;text-decoration:underline;color:#555;font-size:14px}
 .newsletter-footer-link{background:transparent;border:0;padding:0;color:#ddd;text-decoration:underline;align-self:flex-start}
@@ -136,3 +136,5 @@ nav.public-news-pages a:last-child{background:var(--gold);color:#111}
 @media(max-width:1000px){.public-news-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.public-news-grid{grid-template-columns:1fr}.public-news-card>div{padding:22px}}
 @media(prefers-reduced-motion:reduce){.public-news-card{transition:none}.public-news-card:hover{transform:none}}
+
+.newsletter-popup .newsletter-submit:disabled{cursor:default;opacity:.7}
